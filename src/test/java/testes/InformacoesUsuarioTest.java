@@ -2,8 +2,6 @@ package testes;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.concurrent.TimeUnit;
-
 import org.easetech.easytest.annotation.DataLoader;
 import org.easetech.easytest.annotation.Param;
 import org.easetech.easytest.runner.DataDrivenTestRunner;
@@ -16,13 +14,13 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import suporte.Generator;
 import suporte.Screenshort;
+import suporte.Web;
 
 @RunWith(DataDrivenTestRunner.class)
 @DataLoader(filePaths = "InformacoesUsuarioTeste.csv")
@@ -34,15 +32,7 @@ public class InformacoesUsuarioTest {
 	
 	@Before
 	public void setUp() {
-		//Linux
-		//System.setProperty("webdriver.chrome.driver", "/opt/selenium/chromedriver");
-		//Windows
-		System.setProperty("webdriver.chrome.driver", "C:\\java\\chromedriver.exe");
-		navegador = new ChromeDriver();
-		
-		//Timeout
-		navegador.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-		navegador.get("http://www.juliodelima.com.br/taskit/");
+		navegador = Web.createChrorme();
 		
 		// Clicar no link que peossui o texto "Sign in"
 		navegador.findElement(By.linkText("Sign in")).click();
@@ -92,7 +82,6 @@ public class InformacoesUsuarioTest {
 		assertEquals("Your contact has been added!", message);
 	}
 	
-	
 	@Test
 	public void testAdicionarUmaInformacaoAdcionalDoUsuario(@Param(name="tipo")String tipo,@Param(name="contato")String contato, @Param(name="mensagem")String mensagemEsperada) {
 		//clicar no elemento pelo seu path //button[data-target=\"addmoredata\"]
@@ -118,10 +107,11 @@ public class InformacoesUsuarioTest {
 		assertEquals(mensagemEsperada, mensagem);
 		
 	}
-	//@Test
-	public void removerContatoUsuario() {
+	
+	@Test
+	public void removerContatoUsuario(@Param(name="telefone")String telefone, @Param(name="mensagem")String mensagemEsperada) {
 		//clicar no elemento pelo seu path //span[text()="+5511999999999"]/flollowing-sibling::a
-		navegador.findElement(By.xpath("//span[text()=\"+5511999999999\"]/following-sibling::a")).click();
+		navegador.findElement(By.xpath("//span[text()=\""+ telefone +"\"]/following-sibling::a")).click();
 		
 		// Confirmar janela script
 		navegador.switchTo().alert().accept();
@@ -140,8 +130,7 @@ public class InformacoesUsuarioTest {
 		aguardar.until(ExpectedConditions.stalenessOf(messagemPop));
 		
 		//Clicar no link com texto "logout" 
-		navegador.findElement(By.linkText("Logout")).click();
-		
+		navegador.findElement(By.linkText("Logout")).click();	
 	}
 	
 	@After
