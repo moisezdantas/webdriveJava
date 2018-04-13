@@ -1,3 +1,3 @@
-testAdicionarUmaInformacaoAdcionalDoUsuario,login,senha,tipo,contato,mensagem,Duration(ms)
-"",julio0001,123456,Phone,+551188888888,Your contact has been added!,9403.0
-"",julio0001,123456,Email,11@email.com,Your contact has been added!,8493.0
+testAdicionarUmaInformacaoAdcionalDoUsuario,login,senha,tipo,contato,mensagem
+											,julio0001,123456,Phone,+551188888888,"Your contact has been added!"
+											,julio0001,123456,Email,11@email.com,"Your contact has been added!"
